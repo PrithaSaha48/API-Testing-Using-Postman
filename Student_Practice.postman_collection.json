@@ -1,0 +1,306 @@
+{
+	"info": {
+		"_postman_id": "b54daa09-f0d4-4809-ac08-f67efdadab61",
+		"name": "Student_Practice",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28938877"
+	},
+	"item": [
+		{
+			"name": "New Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var code = pm.response.code\r",
+							"if (code==201){\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"  pm.response.to.have.status(201);\r",
+							"});\r",
+							"}\r",
+							"else if(200){\r",
+							"    pm.test(\"Not Found\")\r",
+							"}\r",
+							"\r",
+							"var jsondata = pm.response.json()\r",
+							"pm.environment.set(\"id\",jsondata.id)\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var first_name = pm.variables.replaceIn(\"{{$randomFirstName}}\")\r",
+							"pm.environment.set(\"first_name\", first_name)\r",
+							"\r",
+							"var middle_name = pm.variables.replaceIn(\"{{$randomFirstName}}\")\r",
+							"pm.environment.set(\"middle_name\", middle_name)\r",
+							"\r",
+							"var last_name = pm.variables.replaceIn(\"{{$randomLastName}}\")\r",
+							"pm.environment.set(\"last_name\", last_name)\r",
+							"\r",
+							"var date_of_birth = pm.variables.replaceIn(\"{{$isoTimestamp}}\")\r",
+							"pm.environment.set(\"date_of_birth\",date_of_birth)\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n\"first_name\": \"{{first_name}}\", \r\n\"middle_name\": \"{{middle_name}}\", \r\n\"last_name\": \"{{last_name}}\", \r\n\"date_of_birth\": \"{{date_of_birth}}\" \r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/api/studentsDetails",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"api",
+						"studentsDetails"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get_Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var code = pm.response.code\r",
+							"if (code==200){\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"}\r",
+							"else if(201){\r",
+							"    pm.test(\"Not Found\")\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Base_Url}}/api/studentsDetails",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"api",
+						"studentsDetails"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get_Specific_Student",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"var jsondata = pm.response.json()\r",
+							"pm.test(\"Firstname validation\",function(){\r",
+							"    pm.expect(jsondata.data.first_name).to.eql(pm.environment.get(\"first_name\"))\r",
+							"})\r",
+							"\r",
+							"\r",
+							"pm.test(\"Middletname validation\",function(){\r",
+							"    pm.expect(jsondata.data.middle_name).to.eql(pm.environment.get(\"middle_name\"))\r",
+							"})\r",
+							"\r",
+							"\r",
+							"pm.test(\"Lastname validation\",function(){\r",
+							"    pm.expect(jsondata.data.last_name).to.eql(pm.environment.get(\"last_name\"))\r",
+							"})\r",
+							"\r",
+							"var jsondata = pm.response.json()\r",
+							"pm.test(\"Date of Birth validation\",function(){\r",
+							"    pm.expect(jsondata.data.date_of_birth).to.eql(pm.environment.get(\"date_of_birth\"))\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Base_Url}}/api/studentsDetails/{{id}}",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"api",
+						"studentsDetails",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Technical Skills",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var code = pm.response.code\r",
+							"if (code==200){\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"}\r",
+							"else if(201){\r",
+							"    pm.test(\"Not Found\")\r",
+							"}\r",
+							"\r",
+							"var jsondata = pm.response.json()\r",
+							"pm.test(\"Status validation\",function(){\r",
+							"    pm.expect(jsondata.status).to.eql(pm.environment.get(\"status\"))\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//pm.environment.set(\"variable_key\", \"variable_value\");\r",
+							"var language = pm.variables.replaceIn(\"{{$randomCity}}\")\r",
+							"pm.environment.set(\"language\", language)\r",
+							"\r",
+							"var status = pm.variables.replaceIn(\"{{$randomBoolean}}\")\r",
+							"pm.environment.set(\"status\", status)\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n\"id\": {{id}}, \r\n\"language\": [ \r\n\"{{$randomCity}}\", \r\n\"{{$randomCity}}\" \r\n], \r\n\"yearexp\": \"sample string 2\", \r\n\"lastused\": \"sample string 3\", \r\n\"st_id\": \"{{id}}\" \r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/api/technicalskills",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"api",
+						"technicalskills"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Student Address",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//pm.environment.set(\"variable_key\", \"variable_value\");\r",
+							"var House_Number = pm.variables.replaceIn(\"{{$randomInt}}\")\r",
+							"pm.environment.set(\"House_Number\", House_Number)\r",
+							"\r",
+							"var State = pm.variables.replaceIn(\"{{$randomStreetName}}\")\r",
+							"pm.environment.set(\"State\", State)\r",
+							"\r",
+							"var Country = pm.variables.replaceIn(\"{{$randomCountry}}\")\r",
+							"pm.environment.set(\"Country\", Country)\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var code = pm.response.code\r",
+							"if (code==200){\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"}\r",
+							"else if(201){\r",
+							"    pm.test(\"Not Found\")\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n\"Permanent_Address\": { \r\n\"House_Number\": \"{{$randomInt}}\",\r\n\"City\": \"{{$randomCity}}\",\r\n \"State\": \"{{$randomStreetName}}\", \r\n\"Country\": \"{{$randomCountry}}\",\r\n\"PhoneNumber\": [ \r\n{ \r\n\"Std_Code\": \"sample string 1\",\r\n\"Home\": \"sample string 2\",\r\n \"Mobile\": \"sample string 3\" \r\n},\r\n{ \r\n\"Std_Code\": \"sample string 1\",\r\n\"Home\": \"sample string 2\", \r\n\"Mobile\": \"sample string 3\" \r\n} \r\n] \r\n},\r\n\"stId\": \"id\" \r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_Url}}/api/addresses",
+					"host": [
+						"{{Base_Url}}"
+					],
+					"path": [
+						"api",
+						"addresses"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
